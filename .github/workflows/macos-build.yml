@@ -159,20 +159,26 @@ jobs:
 #      with:
 #        product-path: ${{ github.workspace }}/build/${{ env.installer_fn }}
 
-    - name: Upload to OpenKJ website
-      id: upload_installer
-      if: steps.get_version.outputs.is-semver == 'true'
-      uses: google-github-actions/upload-cloud-storage@main
-      with:
-        credentials: ${{ secrets.gcp_credentials }}
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.0
+      with: 
+        name: Mac${{ matrix.bits }} installer
         path: ${{ github.workspace }}/build/${{ env.installer_fn }}
-        destination: openkj-installers/macos/${{ env.branch }}
+        
+#     - name: Upload to OpenKJ website
+#       id: upload_installer
+#       if: steps.get_version.outputs.is-semver == 'true'
+#       uses: google-github-actions/upload-cloud-storage@main
+#       with:
+#         credentials: ${{ secrets.gcp_credentials }}
+#         path: ${{ github.workspace }}/build/${{ env.installer_fn }}
+#         destination: openkj-installers/macos/${{ env.branch }}
 
-    - name: Release
-      uses: softprops/action-gh-release@v1
-      if: steps.get_version.outputs.is-semver == 'true'
-      with:
-        files: ${{ github.workspace }}/build/${{ env.installer_fn }}
-        prerelease: ${{ env.rtype != 'release' }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#     - name: Release
+#       uses: softprops/action-gh-release@v1
+#       if: steps.get_version.outputs.is-semver == 'true'
+#       with:
+#         files: ${{ github.workspace }}/build/${{ env.installer_fn }}
+#         prerelease: ${{ env.rtype != 'release' }}
+#       env:
+#         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
