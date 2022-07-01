@@ -1,7 +1,7 @@
 [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/OpenKJ/OpenKJ.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/OpenKJ/OpenKJ/context:cpp)
 [![Copr build status](https://copr.fedorainfracloud.org/coprs/openkj/OpenKJ-unstable/package/openkjtools/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/openkj/OpenKJ-unstable/package/openkjtools/)
-[![Windows Build](https://github.com/OpenKJ/OpenKJ/actions/workflows/windows-test.yml/badge.svg)](https://github.com/OpenKJ/OpenKJ/actions/workflows/windows-test.yml)
-[![Test building on macOS](https://github.com/OpenKJ/OpenKJ/actions/workflows/macos-test.yml/badge.svg)](https://github.com/OpenKJ/OpenKJ/actions/workflows/macos-test.yml)
+[![Windows Build](https://github.com/felipeuematsu/OpenKJ/actions/workflows/windows-test.yml/badge.svg)](https://github.com/felipeuematsu/OpenKJ/actions/workflows/windows-test.yml)
+[![Test building on macOS](https://github.com/felipeuematsu/OpenKJ/actions/workflows/macos-test.yml/badge.svg)](https://github.com/felipeuematsu/OpenKJ/actions/workflows/macos-test.yml)
 
 **Downloads**  
 If you are looking for installers for Windows or macOS, please visit the Downloads section at https://openkj.org
