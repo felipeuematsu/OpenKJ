@@ -176,7 +176,7 @@ void OKJSongbookAPI::updateSongDb()
     }
     if (cancelUpdate)
         return;
-    if (query.exec("SELECT DISTINCT artist,title,duration FROM dbsongs WHERE discid != '!!DROPPED!!' AND discid != '!!BAD!!' ORDER BY artist ASC, title ASC"))
+    if (query.exec("SELECT DISTINCT artist,title,duration,plays FROM dbsongs WHERE discid != '!!DROPPED!!' AND discid != '!!BAD!!' ORDER BY artist ASC, title ASC"))
     {
         if (cancelUpdate)
             return;
@@ -201,6 +201,7 @@ void OKJSongbookAPI::updateSongDb()
                 songObject.insert("artist", query.value(0).toString());
                 songObject.insert("title", query.value(1).toString());
                 songObject.insert("duration", query.value(2).toInt());
+                songObject.insert("plays", query.value(3).toInt());
                 songsArray.insert(0, songObject);
                 QApplication::processEvents();
                 count++;
