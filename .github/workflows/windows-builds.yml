@@ -250,14 +250,39 @@ jobs:
         cp -v ./gstreamer-dist/1.0/mingw_${{ matrix.arch }}/bin/*.dll output/
       shell: bash
 
-    - name: Copy in other dependencies
+    - name: Copy in other dependencies 1
       run: |
         copy LICENSE output\LICENSE.txt
-        copy ${{ steps.download-infozip.outputs.file-path }} output\
-        copy ${{ steps.download-roboto-bold.outputs.file-path }} output\
-        copy ${{ steps.download-roboto-medium.outputs.file-path }} output\
-        copy ${{ steps.download-roboto-regular.outputs.file-path }} output\
-        copy ${{ steps.download-source-code-pro-medium.outputs.file-path }} output\
+        
+    - name: Copy in other dependencies 2
+      if: steps.download-infozip.outputs.file-path != null
+      run: |
+        copy ${{ steps.download-infozip.outputs.file-path }} output
+        
+    - name: Copy in other dependencies 3
+      if: steps.download-roboto-bold.outputs.file-path != null
+      run: |
+        copy ${{ steps.download-roboto-bold.outputs.file-path }} output
+        
+        
+    - name: Copy in other dependencies 4
+      if: steps.download-roboto-medium.outputs.file-path != null
+      run: |
+        copy ${{ steps.download-roboto-medium.outputs.file-path }} output
+        
+    - name: Copy in other dependencies 5
+      if: steps.download-roboto-regular.outputs.file-path != null
+      run: |
+        copy ${{ steps.download-roboto-regular.outputs.file-path }} output
+                
+    - name: Copy in other dependencies 6
+      if: steps.download-source-code-pro-medium.outputs.file-path != null
+      run: |
+        copy ${{ steps.download-source-code-pro-medium.outputs.file-path }} output
+                
+    - name: Copy in other dependencies 7
+      if: steps.download-openssl.outputs.file-path != null
+      run: |
         7z e -bb3 -y ${{ steps.download-openssl.outputs.file-path }} -o"output\"
 
     # - name: Sign OpenKJ executable
