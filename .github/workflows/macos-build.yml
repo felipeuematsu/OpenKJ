@@ -1,6 +1,10 @@
 name: Create MacOS Build & Installer
 
 on:
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: testing
   push:
     tags:
       - '*.*.*'
