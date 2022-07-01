@@ -6,11 +6,10 @@ on:
       tags:
         description: testing
   push:
-    tags:
-      - '*.*.*'
     branches:
       - master
-
+    tags:
+      - '*.*.*'
 
 jobs:
   build:
@@ -99,14 +98,14 @@ jobs:
           sed -i "s/#define MyAppVersion.*/#define MyAppVersion \"${{ steps.get_version.outputs.version-without-v }}\"/" cd/openkj${{ matrix.bits }}.iss
         shell: bash
 
-      - name: Cache GStreamer
-        id: cache-gst
-        uses: actions/cache@v2
-        with:
-          path: |
-            C:/gstreamer
-            ${{github.workspace}}/gstreamer-dist
-          key: ${{ runner.os }}-GstCache-1.20.3-${{ matrix.bits }}-installer-build
+#      - name: Cache GStreamer
+#        id: cache-gst
+#        uses: actions/cache@v2
+#        with:
+#          path: |
+#            C:/gstreamer
+#            ${{github.workspace}}/gstreamer-dist
+#          key: ${{ runner.os }}-GstCache-1.20.3-${{ matrix.bits }}-installer-build
 
       - name: Download GST Installer
         if: steps.cache-gst.outputs.cache-hit != 'true'
@@ -126,13 +125,13 @@ jobs:
           file-name: 'gstreamer-devel.msi'
           location: './downloads'
 
-      - name: Cache Other Downloads
-        id: cache-downloads
-        uses: actions/cache@v2
-        with:
-          path: |
-            /downloads
-          key: ${{ runner.os }}-CachedDownloads-${{ matrix.bits }}-1
+#      - name: Cache Other Downloads
+#        id: cache-downloads
+#        uses: actions/cache@v2
+#        with:
+#          path: |
+#            /downloads
+#          key: ${{ runner.os }}-CachedDownloads-${{ matrix.bits }}-1
 
       - name: Download InfoZip Binary
         if: steps.cache-downloads.outputs.cache-hit != 'true'
@@ -204,12 +203,12 @@ jobs:
         run: |
           cmd /c start /wait msiexec /package ${{ steps.download-gst-dev.outputs.file-path }} /passive ADDLOCAL=ALL
 
-      - name: Cache Qt
-        id: cache-qt
-        uses: actions/cache@v2
-        with:
-          path: "D:/a/OpenKJ/Qt"
-          key: ${{ runner.os }}-QtCache-5.15.2-${{ matrix.arch }}-2
+#      - name: Cache Qt
+#        id: cache-qt
+#        uses: actions/cache@v2
+#        with:
+#          path: "D:/a/OpenKJ/Qt"
+#          key: ${{ runner.os }}-QtCache-5.15.2-${{ matrix.arch }}-2
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v2
@@ -253,39 +252,14 @@ jobs:
           cp -v ./gstreamer-dist/1.0/mingw_${{ matrix.arch }}/bin/*.dll output/
         shell: bash
 
-      - name: Copy in other dependencies 1
+      - name: Copy in other dependencies
         run: |
           copy LICENSE output\LICENSE.txt
-
-      - name: Copy in other dependencies 2
-        if: steps.download-infozip.outputs.file-path != null
-        run: |
-          copy ${{ steps.download-infozip.outputs.file-path }} output
-
-      - name: Copy in other dependencies 3
-        if: steps.download-roboto-bold.outputs.file-path != null
-        run: |
-          copy ${{ steps.download-roboto-bold.outputs.file-path }} output
-
-
-      - name: Copy in other dependencies 4
-        if: steps.download-roboto-medium.outputs.file-path != null
-        run: |
-          copy ${{ steps.download-roboto-medium.outputs.file-path }} output
-
-      - name: Copy in other dependencies 5
-        if: steps.download-roboto-regular.outputs.file-path != null
-        run: |
-          copy ${{ steps.download-roboto-regular.outputs.file-path }} output
-
-      - name: Copy in other dependencies 6
-        if: steps.download-source-code-pro-medium.outputs.file-path != null
-        run: |
-          copy ${{ steps.download-source-code-pro-medium.outputs.file-path }} output
-
-      - name: Copy in other dependencies 7
-        if: steps.download-openssl.outputs.file-path != null
-        run: |
+          copy ${{ steps.download-infozip.outputs.file-path }} output\
+          copy ${{ steps.download-roboto-bold.outputs.file-path }} output\
+          copy ${{ steps.download-roboto-medium.outputs.file-path }} output\
+          copy ${{ steps.download-roboto-regular.outputs.file-path }} output\
+          copy ${{ steps.download-source-code-pro-medium.outputs.file-path }} output\
           7z e -bb3 -y ${{ steps.download-openssl.outputs.file-path }} -o"output\"
 
       # - name: Sign OpenKJ executable
@@ -321,6 +295,15 @@ jobs:
           prerelease: ${{ env.rtype != 'release' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      #     - name: Upload to OpenKJ website
+      #       id: upload_installer
+      #       if: steps.get_version.outputs.is-semver == 'true'
+      #       uses: google-github-actions/upload-cloud-storage@main
+      #       with:
+      #         credentials: ${{ secrets.gcp_credentials }}
+      #         path: installer/${{ env.branch }}/${{ env.installer_fn }}
+      #         destination: openkj-installers/windows/${{ env.branch }}
 
       - name: Upload installer artifact
         id: upload_artifact
