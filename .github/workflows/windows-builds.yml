@@ -98,14 +98,14 @@ jobs:
           sed -i "s/#define MyAppVersion.*/#define MyAppVersion \"${{ steps.get_version.outputs.version-without-v }}\"/" cd/openkj${{ matrix.bits }}.iss
         shell: bash
 
-#      - name: Cache GStreamer
-#        id: cache-gst
-#        uses: actions/cache@v2
-#        with:
-#          path: |
-#            C:/gstreamer
-#            ${{github.workspace}}/gstreamer-dist
-#          key: ${{ runner.os }}-GstCache-1.20.3-${{ matrix.bits }}-installer-build
+      - name: Cache GStreamer
+        id: cache-gst
+        uses: actions/cache@v2
+        with:
+          path: |
+            C:/gstreamer
+            ${{github.workspace}}/gstreamer-dist
+          key: ${{ runner.os }}-GstCache-1.20.3-${{ matrix.bits }}-installer-build
 
       - name: Download GST Installer
         if: steps.cache-gst.outputs.cache-hit != 'true'
@@ -203,12 +203,12 @@ jobs:
         run: |
           cmd /c start /wait msiexec /package ${{ steps.download-gst-dev.outputs.file-path }} /passive ADDLOCAL=ALL
 
-#      - name: Cache Qt
-#        id: cache-qt
-#        uses: actions/cache@v2
-#        with:
-#          path: "D:/a/OpenKJ/Qt"
-#          key: ${{ runner.os }}-QtCache-5.15.2-${{ matrix.arch }}-2
+      - name: Cache Qt
+        id: cache-qt
+        uses: actions/cache@v2
+        with:
+          path: "D:/a/OpenKJ/Qt"
+          key: ${{ runner.os }}-QtCache-5.15.2-${{ matrix.arch }}-2
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v2
