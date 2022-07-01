@@ -290,18 +290,25 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Upload to OpenKJ website
-      id: upload_installer
-      if: steps.get_version.outputs.is-semver == 'true'
-      uses: google-github-actions/upload-cloud-storage@main
-      with:
-        credentials: ${{ secrets.gcp_credentials }}
-        path: installer/${{ env.branch }}/${{ env.installer_fn }}
-        destination: openkj-installers/windows/${{ env.branch }}
-
-    - name: Upload installer artifact
-      id: upload_artifact
-      uses: actions/upload-artifact@v2
-      with:
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.0
+      with: 
         name: Win${{ matrix.bits }} installer
         path: installer/${{ env.branch }}/${{ env.installer_fn }}
+        
+
+#     - name: Upload to OpenKJ website
+#       id: upload_installer
+#       if: steps.get_version.outputs.is-semver == 'true'
+#       uses: google-github-actions/upload-cloud-storage@main
+#       with:
+#         credentials: ${{ secrets.gcp_credentials }}
+#         path: installer/${{ env.branch }}/${{ env.installer_fn }}
+#         destination: openkj-installers/windows/${{ env.branch }}
+
+#     - name: Upload installer artifact
+#       id: upload_artifact
+#       uses: actions/upload-artifact@v2
+#       with:
+#         name: Win${{ matrix.bits }} installer
+#         path: installer/${{ env.branch }}/${{ env.installer_fn }}
